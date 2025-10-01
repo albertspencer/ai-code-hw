@@ -4,21 +4,295 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Email Preferences</title>
+
+    <!-- Fonts for a friendlier personality -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Earthy palette variables (kept from original) */
+        :root{
+            --accent: 120,72,28;        /* burnt umber */
+            --accent-light: 205,172,122;/* warm sand */
+            --accent-2: 88,110,72;      /* olive green */
+            --muted: rgba(28,20,12,0.06);
+            --bg-a: 247,242,236;        /* cream */
+            --bg-b: 233,229,221;        /* soft stone */
+            --text-soft: #3d371f;
+            --paper: 255,250,244;
+        }
+
+        html,body { height: 100%; }
+
+        body.bg-gradient {
+            font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background-color: rgb(var(--bg-a));
+            background-image:
+                radial-gradient(circle at 8% 12%, rgba(var(--accent-light),0.06) 0, rgba(var(--accent-light),0.02) 12%, transparent 28%),
+                radial-gradient(circle at 92% 86%, rgba(var(--accent-2),0.04) 0, rgba(var(--accent-2),0.01) 22%, transparent 40%),
+                linear-gradient(180deg, rgb(var(--bg-a)) 0%, rgb(var(--bg-b)) 100%);
+            color: var(--text-soft);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            min-height: 100vh;
+            padding-bottom: 4rem;
+        }
+
+        /* A friendly top band with subtle texture and a mascot */
+        .brand-hero {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.25rem;
+            border-radius: 1rem;
+            background: linear-gradient(90deg, rgba(var(--accent-light),0.18), rgba(var(--paper),0.4));
+            box-shadow: 0 6px 30px rgba(28,22,14,0.04);
+            margin-bottom: 1rem;
+        }
+
+        .mascot {
+            width: 56px;
+            height: 56px;
+            flex: 0 0 56px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(circle at 30% 20%, rgba(var(--accent-2),0.12), rgba(var(--accent),0.08));
+            border: 1px solid rgba(30,24,16,0.06);
+            font-family: "Playfair Display", serif;
+            color: rgb(var(--accent));
+            font-weight: 600;
+            transform: rotate(-8deg);
+            box-shadow: 0 6px 16px rgba(28,22,14,0.06);
+        }
+
+        .brand-hero h2 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-family: "Playfair Display", serif;
+            color: rgb(49,38,26);
+        }
+        .brand-hero p { margin: 0; color: rgba(66,53,40,0.78); font-size: .92rem; }
+
+        /* Card styling preserved but with warmer tone and a playful radius */
+        .card {
+            border-radius: 1rem;
+            overflow: visible;
+            box-shadow: 0 12px 42px rgba(28,22,14,0.06);
+        }
+        .card .card-body {
+            background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(249,246,241,0.92));
+            border-radius: .75rem;
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, rgba(var(--accent),0.96) 0%, rgba(var(--accent-light),0.98) 100%);
+            color: #fff;
+            border-bottom: none;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        /* Slightly bigger list items with a relaxed feel */
+        .list-group-item {
+            cursor: pointer;
+            border-radius: .75rem;
+            padding: .9rem 1rem;
+            background-clip: padding-box;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,245,240,0.8));
+            border: 1px solid rgba(30,24,16,0.04);
+            transition: transform 220ms cubic-bezier(.2,.9,.2,1),
+                        box-shadow 220ms cubic-bezier(.2,.9,.2,1),
+                        background 220ms;
+        }
+
+        .list-group-item:hover, .list-group-item:focus-within {
+            transform: translateX(6px) rotate(-0.2deg);
+            background: linear-gradient(90deg, rgba(var(--accent),0.04) 0%, rgba(var(--accent-light),0.03) 100%);
+            box-shadow: 0 10px 28px rgba(20,18,12,0.06);
+        }
+
+        /* Checkboxes are slightly larger and have a friendly rounded square shape already set */
+        .form-check-input {
+            transition: transform 160ms ease, box-shadow 160ms ease, background-color 120ms ease, border-color 120ms ease;
+            border-radius: .35rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: rgb(var(--accent-2));
+            border: 1px solid rgba(60,50,36,0.12);
+            background-color: #fff;
+        }
+        .form-check-input:hover { transform: scale(1.14); box-shadow: 0 8px 18px rgba(20,18,12,0.06); }
+        .form-check-input:checked { background-color: rgb(var(--accent-2)); border-color: rgb(var(--accent-2)); box-shadow: 0 6px 12px rgba(var(--accent-2),0.12); color: #fff; }
+
+        /* Add a subtle tag line and microcopy styles */
+        .micro {
+            font-size: .88rem;
+            color: rgba(66,53,40,0.72);
+        }
+
+        /* Buttons: keep tasteful animations, add a playful nudge on hover */
+        .btn {
+            border-radius: .6rem;
+            padding: .5rem .75rem;
+        }
+        .btn:hover { transform: translateY(-5px) rotate(-0.3deg); }
+
+        .btn-primary {
+            background-color: rgb(var(--accent-2));
+            border-color: rgba(40,50,32,0.12);
+            color: #fff;
+            position: relative;
+            overflow: visible;
+        }
+        /* Change primary from green to burnt umber on hover/focus (overrides Bootstrap hover) */
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: rgb(var(--accent)); /* burnt umber */
+            border-color: rgba(var(--accent),0.18);
+            color: #fff;
+            box-shadow: 0 10px 24px rgba(120,72,28,0.12);
+            outline: none;
+        }
+        .btn-primary:active { transform: translateY(-3px) rotate(-0.25deg) scale(.995); }
+
+        /* Friendly status badge animation */
+        .badge-animate {
+            transform-origin: 50% 50%;
+            animation: pop 640ms cubic-bezier(.2,.9,.2,1);
+        }
+        @keyframes pop {
+            0% { transform: scale(.6); opacity: 0; }
+            60% { transform: scale(1.07); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Floating leaf celebration for Save */
+        .leaf {
+            position: absolute;
+            pointer-events: none;
+            font-size: 18px;
+            opacity: 0;
+            transform-origin: center;
+            filter: drop-shadow(0 6px 10px rgba(30,20,10,0.08));
+            animation: floatLeaf 1200ms forwards cubic-bezier(.2,.75,.2,1);
+        }
+        @keyframes floatLeaf {
+            0% { opacity: 0; transform: translateY(0) rotate(0) scale(.85); }
+            10% { opacity: 1; }
+            60% { transform: translateY(-64px) translateX(var(--x, -10px)) rotate(18deg) scale(1.05); opacity: 1; }
+            100% { transform: translateY(-120px) translateX(var(--x, -10px)) rotate(48deg) scale(.85); opacity: 0; }
+        }
+
+        /* Easter egg banner (top) */
+        .easter-egg {
+            position: fixed;
+            top: 84px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-6px) scale(.98);
+            padding: .6rem .9rem;
+            border-radius: .7rem;
+            background: linear-gradient(90deg, rgba(var(--accent-light),0.22), rgba(255,255,255,0.94));
+            color: rgb(45,35,22);
+            box-shadow: 0 8px 26px rgba(30,20,10,0.08);
+            opacity: 0;
+            transition: transform 360ms cubic-bezier(.2,.9,.2,1), opacity 360ms;
+            z-index: 1060;
+            pointer-events: none;
+            font-weight: 600;
+        }
+        .easter-egg.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+        /* Footer personality */
+        .page-footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: .5rem 1rem;
+            display: flex;
+            justify-content: center;
+            color: rgba(66,53,40,0.7);
+            font-size: .85rem;
+            pointer-events: none;
+        }
+
+        /* bottom egg banner — larger and easier to read */
+        .egg-footer {
+            position: fixed;
+            left: 50%;
+            bottom: 56px;
+            transform: translateX(-50%) translateY(10px);
+            padding: .75rem 1rem;
+            border-radius: .8rem;
+            background: linear-gradient(90deg, rgba(var(--accent-light),0.2), rgba(255,255,255,0.96));
+            color: rgb(38,30,20);
+            box-shadow: 0 10px 30px rgba(30,20,10,0.08);
+            opacity: 0;
+            transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 320ms;
+            z-index: 1070;
+            pointer-events: none;
+            font-weight: 700;
+            font-size: 0.98rem;
+            max-width: 92%;
+            text-align: center;
+        }
+        .egg-footer.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Small accessibility helpers */
+        .sr-only { position: absolute; left: -9999px; }
+
+        /* ensure deselect and reset hover readability (kept explicit) */
+        #deselectAllBtn, #resetBtn {
+            color: rgb(94,78,58);
+            background-color: rgba(255,255,255,0.66);
+            border-color: rgba(94,78,58,0.12);
+        }
+        #deselectAllBtn:hover, #deselectAllBtn:focus, #resetBtn:hover, #resetBtn:focus {
+            background-color: rgba(var(--accent-light),0.18);
+            color: rgb(34,28,18);
+            border-color: rgba(var(--accent),0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(20,18,12,0.06);
+        }
+
+        /* small responsive tweaks */
+        @media (max-width:560px) {
+            .brand-hero { padding: .9rem; gap: .6rem; }
+            .mascot { width:46px; height:46px; font-size:.95rem; }
+            .easter-egg { top: 72px; padding: .5rem .7rem; }
+            .egg-footer { bottom: 72px; padding: .6rem .8rem; font-size: .92rem; }
+        }
+    </style>
 </head>
-<body class="bg-gradient" style="background: linear-gradient(180deg,#f8fafc 0%, #eef2ff 100%);">
+<body class="bg-gradient">
     <main class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+            <div class="col-md-9 col-lg-7">
+                <!-- Friendly intro panel -->
+                <div class="brand-hero mb-3">
+                    <div class="mascot" aria-hidden="true">🍃</div>
+                    <div>
+                        <h2>Hey there — let's tidy your inbox</h2>
+                        <p class="micro">Choose what you'd like to receive. We respect your time — pick what feels right for you.</p>
+                    </div>
+                </div>
+
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h1 class="h5 mb-0">Email Preferences</h1>
-                            <small class="opacity-75">Manage what you receive</small>
+                            <div>
+                                <h1 class="h5 mb-0">Email Preferences</h1>
+                                <div class="small opacity-75">Gentle, focused, and plant-friendly</div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-white-50">Last updated locally</small>
+                            </div>
                         </div>
                     </div>
 
                     <div class="card-body">
+                        <!-- Copilot prompt retained in comment -->
                         <!--
                           Copilot prompt:
                           "Add a Save button that submits this form to https://www.w3schools.com/action_page.php,
@@ -29,66 +303,66 @@
                         <!-- control bar: select/deselect all -->
                         <div class="mb-3 d-flex gap-2 align-items-center">
                             <div class="btn-group" role="group" aria-label="Select controls">
-                                <button type="button" class="btn btn-sm btn-success" id="selectAllBtn">Select All</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllBtn">Deselect All</button>
+                                <button type="button" class="btn btn-sm btn-success" id="selectAllBtn" title="Select every preference">Select All</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllBtn" title="Deselect every preference">Deselect All</button>
                             </div>
                             <div class="ms-auto text-muted small">Quick actions</div>
                         </div>
 
                         <!-- form posts to w3schools action page for testing and opens in a new tab -->
-                        <form id="prefsForm" autocomplete="off" action="https://www.w3schools.com/action_page.php" method="get" target="_blank">
-                            <div class="list-group mb-3">
-                                <label class="list-group-item d-flex gap-3 align-items-start">
+                        <form id="prefsForm" autocomplete="off" action="https://www.w3schools.com/action_page.php" method="get" target="_blank" aria-labelledby="prefsHeading">
+                            <div class="list-group mb-3" role="list" aria-label="Email preference list">
+                                <label class="list-group-item d-flex gap-3 align-items-start" tabindex="0" role="listitem" aria-label="Critical alerts and notifications">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="prefCritical" name="critical">
+                                        <input class="form-check-input" type="checkbox" id="prefCritical" name="critical" />
                                     </div>
                                     <div class="ms-2">
                                         <div class="fw-semibold">Critical alerts and notifications</div>
-                                        <div class="small text-muted">Important messages about your tax return</div>
+                                        <div class="small text-muted">Important messages about your tax return and account.</div>
                                     </div>
                                 </label>
 
-                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                <label class="list-group-item d-flex gap-3 align-items-start" tabindex="0" role="listitem" aria-label="Special offers">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="prefOffers" name="offers">
+                                        <input class="form-check-input" type="checkbox" id="prefOffers" name="offers" />
                                     </div>
                                     <div class="ms-2">
                                         <div class="fw-semibold">Special offers</div>
-                                        <div class="small text-muted">Information about discounts and services</div>
+                                        <div class="small text-muted">Discounts and seasonal services tailored for you.</div>
                                     </div>
                                 </label>
 
-                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                <label class="list-group-item d-flex gap-3 align-items-start" tabindex="0" role="listitem" aria-label="IRS updates and deadlines">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="prefIRS" name="irs">
+                                        <input class="form-check-input" type="checkbox" id="prefIRS" name="irs" />
                                     </div>
                                     <div class="ms-2">
                                         <div class="fw-semibold">IRS updates & deadlines</div>
-                                        <div class="small text-muted">Stay informed about changes and dates</div>
+                                        <div class="small text-muted">Stay informed about important dates and changes.</div>
                                     </div>
                                 </label>
 
-                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                <label class="list-group-item d-flex gap-3 align-items-start" tabindex="0" role="listitem" aria-label="Monthly newsletter">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="prefNewsletter" name="newsletter">
+                                        <input class="form-check-input" type="checkbox" id="prefNewsletter" name="newsletter" />
                                     </div>
                                     <div class="ms-2">
                                         <div class="fw-semibold">Monthly newsletter</div>
-                                        <div class="small text-muted">Tax tips, news, and educational content</div>
+                                        <div class="small text-muted">Tax tips, news, and helpful stories — once a month.</div>
                                     </div>
                                 </label>
                             </div>
 
-                            <div class="d-flex gap-2 align-items-center">
+                            <div class="d-flex gap-2 align-items-center position-relative">
                                 <!-- Save button: submits form to the configured action and triggers local save -->
-                                <button type="submit" class="btn btn-primary d-flex align-items-center" id="saveBtn">
+                                <button type="submit" class="btn btn-primary d-flex align-items-center" id="saveBtn" aria-live="polite">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2 me-2" viewBox="0 0 16 16" aria-hidden="true">
                                         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7.5 7.5a.5.5 0 0 1-.708 0L2.146 8.354a.5.5 0 1 1 .708-.708L6 10.793l7.146-7.147a.5.5 0 0 1 .708 0z"/>
                                     </svg>
                                     Save Preferences
                                 </button>
 
-                                <button type="button" class="btn btn-outline-secondary" id="resetBtn">Reset</button>
+                                <button type="button" class="btn btn-outline-secondary" id="resetBtn" title="Clear preferences from this browser">Reset</button>
 
                                 <div id="status" class="align-self-center small ms-2" style="display:none;">
                                     <span class="badge bg-success" id="statusBadge">Saved</span>
@@ -105,6 +379,12 @@
         </div>
     </main>
 
+    <!-- Bottom footer and clearer easter-egg area -->
+    <div class="page-footer" aria-hidden="true">
+        <div id="eggFooter" class="egg-footer" role="status" aria-live="polite" style="display:none;"></div>
+        <div>Made with care · Minimal interruptions · Lots of plants 🍃</div>
+    </div>
+
     <script>
         const STORAGE_KEY = 'emailPreferences_v1';
         const form = document.getElementById('prefsForm');
@@ -113,6 +393,8 @@
         const resetBtn = document.getElementById('resetBtn');
         const selectAllBtn = document.getElementById('selectAllBtn');
         const deselectAllBtn = document.getElementById('deselectAllBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const eggFooter = document.getElementById('eggFooter');
 
         // helper: get all checkbox inputs inside the form
         function allCheckboxes() {
@@ -140,14 +422,18 @@
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             showStatus('Saved', 'bg-success');
+            celebrateSave();
         }
 
         function showStatus(text, badgeClass = 'bg-success') {
             statusBadge.textContent = text;
-            statusBadge.className = 'badge ' + badgeClass;
+            statusBadge.className = 'badge ' + badgeClass + ' badge-animate';
             status.style.display = 'inline';
             clearTimeout(showStatus._t);
-            showStatus._t = setTimeout(()=> status.style.display = 'none', 1400);
+            showStatus._t = setTimeout(()=> {
+                status.style.display = 'none';
+                statusBadge.classList.remove('badge-animate');
+            }, 1400);
         }
 
         function setAll(checked) {
@@ -181,9 +467,108 @@
             }
         });
 
+        // Make label (list-group-item) toggle the checkbox when clicked or activated via keyboard
+        document.querySelectorAll('.list-group-item').forEach(item => {
+            item.addEventListener('click', (ev) => {
+                // prevent double-toggling if the checkbox itself was clicked
+                if (ev.target.tagName.toLowerCase() === 'input') return;
+                const cb = item.querySelector('input[type="checkbox"]');
+                if (cb) cb.checked = !cb.checked;
+            });
+            item.addEventListener('keydown', (ev) => {
+                if (ev.key === ' ' || ev.key === 'Enter') {
+                    ev.preventDefault();
+                    const cb = item.querySelector('input[type="checkbox"]');
+                    if (cb) cb.checked = !cb.checked;
+                }
+            });
+        });
+
+        // lightweight celebratory floating leaves when saving
+        function celebrateSave() {
+            const rect = saveBtn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const startY = rect.top - 6;
+            const count = 6;
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'leaf';
+                el.textContent = '🍃';
+                // slight spread
+                const spread = (i - (count/2)) * 14;
+                el.style.left = (centerX + spread) + 'px';
+                el.style.top = startY + 'px';
+                // give each leaf a different horizontal drift
+                el.style.setProperty('--x', (Math.round((Math.random() * 40) - 20)) + 'px');
+                document.body.appendChild(el);
+                // cleanup after animation
+                (function(node){
+                    setTimeout(()=> node.remove(), 1400);
+                })(el);
+            }
+        }
+
+        // Konami-style easter egg: Up, Up, Down, Down reveals a playful message
+        (function(){
+            const konamiSeq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown'];
+            let konamiIndex = 0;
+
+            function triggerEasterEgg(){
+                const hero = document.querySelector('.brand-hero');
+                const mascot = hero ? hero.querySelector('.mascot') : null;
+                const original = mascot ? mascot.textContent : '';
+                if (mascot) mascot.textContent = '🪴';
+
+                // Top banner (keeps original behavior)
+                const egg = document.createElement('div');
+                egg.className = 'easter-egg';
+                egg.textContent = "Secret sprout unlocked — enjoy a virtual plant! 🌱";
+                document.body.appendChild(egg);
+
+                // animate in
+                requestAnimationFrame(() => egg.classList.add('show'));
+
+                // show bottom, easier to read
+                if (eggFooter) {
+                    eggFooter.textContent = "Secret sprout unlocked — enjoy a virtual plant! 🌱";
+                    eggFooter.style.display = '';
+                    // ensure rendering before toggling class
+                    requestAnimationFrame(() => eggFooter.classList.add('show'));
+                }
+
+                // restore and cleanup after a while
+                setTimeout(() => {
+                    egg.classList.remove('show');
+                    if (eggFooter) eggFooter.classList.remove('show');
+                    if (mascot) mascot.textContent = original;
+                    setTimeout(()=> {
+                        egg.remove();
+                        if (eggFooter) eggFooter.style.display = 'none';
+                    }, 420);
+                }, 3200);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                // ignore inputs when typing into form fields
+                const tag = document.activeElement && document.activeElement.tagName;
+                if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+                if (e.key === konamiSeq[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiSeq.length) {
+                        triggerEasterEgg();
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = (e.key === konamiSeq[0]) ? 1 : 0;
+                }
+            });
+        })();
+
         // initialize
         loadPreferences();
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
