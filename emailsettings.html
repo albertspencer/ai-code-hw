@@ -6,56 +6,99 @@
     <title>Email Preferences</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="bg-gradient" style="background: linear-gradient(180deg,#f8fafc 0%, #eef2ff 100%);">
     <main class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h1 class="h5 mb-0">Email Preferences</h1>
+                            <small class="opacity-75">Manage what you receive</small>
+                        </div>
+                    </div>
+
                     <div class="card-body">
-                        <h1 class="h4 mb-3">Email Preferences</h1>
-                        <!-- form now posts to w3schools action page for testing and opens in a new tab -->
+                        <!--
+                          Copilot prompt:
+                          "Add a Save button that submits this form to https://www.w3schools.com/action_page.php,
+                           persists the checkbox preferences to localStorage, shows a temporary 'Saved' status,
+                           and retains an accessible Reset button. Open the action in a new tab."
+                        -->
+
+                        <!-- control bar: select/deselect all -->
+                        <div class="mb-3 d-flex gap-2 align-items-center">
+                            <div class="btn-group" role="group" aria-label="Select controls">
+                                <button type="button" class="btn btn-sm btn-success" id="selectAllBtn">Select All</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllBtn">Deselect All</button>
+                            </div>
+                            <div class="ms-auto text-muted small">Quick actions</div>
+                        </div>
+
+                        <!-- form posts to w3schools action page for testing and opens in a new tab -->
                         <form id="prefsForm" autocomplete="off" action="https://www.w3schools.com/action_page.php" method="get" target="_blank">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="prefCritical" name="critical">
-                                <label class="form-check-label" for="prefCritical">
-                                    Critical alerts and notifications about your tax return
+                            <div class="list-group mb-3">
+                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="prefCritical" name="critical">
+                                    </div>
+                                    <div class="ms-2">
+                                        <div class="fw-semibold">Critical alerts and notifications</div>
+                                        <div class="small text-muted">Important messages about your tax return</div>
+                                    </div>
+                                </label>
+
+                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="prefOffers" name="offers">
+                                    </div>
+                                    <div class="ms-2">
+                                        <div class="fw-semibold">Special offers</div>
+                                        <div class="small text-muted">Information about discounts and services</div>
+                                    </div>
+                                </label>
+
+                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="prefIRS" name="irs">
+                                    </div>
+                                    <div class="ms-2">
+                                        <div class="fw-semibold">IRS updates & deadlines</div>
+                                        <div class="small text-muted">Stay informed about changes and dates</div>
+                                    </div>
+                                </label>
+
+                                <label class="list-group-item d-flex gap-3 align-items-start">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="prefNewsletter" name="newsletter">
+                                    </div>
+                                    <div class="ms-2">
+                                        <div class="fw-semibold">Monthly newsletter</div>
+                                        <div class="small text-muted">Tax tips, news, and educational content</div>
+                                    </div>
                                 </label>
                             </div>
 
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="prefOffers" name="offers">
-                                <label class="form-check-label" for="prefOffers">
-                                    Information about special offers for tax services
-                                </label>
-                            </div>
-
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="prefIRS" name="irs">
-                                <label class="form-check-label" for="prefIRS">
-                                    Receive notifications of IRS changes and deadlines
-                                </label>
-                            </div>
-
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="prefNewsletter" name="newsletter">
-                                <label class="form-check-label" for="prefNewsletter">
-                                    Learn from monthly tax newsletter with tax news and tips
-                                </label>
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                <!-- improved Save button with icon; it's the form submit button -->
+                            <div class="d-flex gap-2 align-items-center">
+                                <!-- Save button: submits form to the configured action and triggers local save -->
                                 <button type="submit" class="btn btn-primary d-flex align-items-center" id="saveBtn">
-                                    <!-- simple inline check icon -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2 me-2" viewBox="0 0 16 16" aria-hidden="true">
                                         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7.5 7.5a.5.5 0 0 1-.708 0L2.146 8.354a.5.5 0 1 1 .708-.708L6 10.793l7.146-7.147a.5.5 0 0 1 .708 0z"/>
                                     </svg>
                                     Save Preferences
                                 </button>
+
                                 <button type="button" class="btn btn-outline-secondary" id="resetBtn">Reset</button>
-                                <div id="status" class="align-self-center text-success small ms-2" style="display:none;">Saved</div>
+
+                                <div id="status" class="align-self-center small ms-2" style="display:none;">
+                                    <span class="badge bg-success" id="statusBadge">Saved</span>
+                                </div>
                             </div>
                         </form>
+                    </div>
+
+                    <div class="card-footer text-muted small">
+                        Preferences are stored locally in your browser. Submitting the form demonstrates sending data to the test endpoint.
                     </div>
                 </div>
             </div>
@@ -66,48 +109,76 @@
         const STORAGE_KEY = 'emailPreferences_v1';
         const form = document.getElementById('prefsForm');
         const status = document.getElementById('status');
+        const statusBadge = document.getElementById('statusBadge');
         const resetBtn = document.getElementById('resetBtn');
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const deselectAllBtn = document.getElementById('deselectAllBtn');
+
+        // helper: get all checkbox inputs inside the form
+        function allCheckboxes() {
+            return Array.from(form.querySelectorAll('input[type="checkbox"]'));
+        }
 
         function loadPreferences() {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (!stored) return;
             try {
                 const prefs = JSON.parse(stored);
-                Object.keys(prefs).forEach(k => {
-                    const el = form.elements[k];
-                    if (el) el.checked = !!prefs[k];
+                allCheckboxes().forEach(cb => {
+                    const name = cb.name || cb.id;
+                    if (name in prefs) cb.checked = !!prefs[name];
                 });
             } catch (e) { console.warn('Invalid prefs', e); }
         }
 
         function savePreferences() {
             const data = {
-                critical: form.elements['critical'].checked,
-                offers: form.elements['offers'].checked,
-                irs: form.elements['irs'].checked,
-                newsletter: form.elements['newsletter'].checked
+                critical: !!form.elements['critical'] && form.elements['critical'].checked,
+                offers: !!form.elements['offers'] && form.elements['offers'].checked,
+                irs: !!form.elements['irs'] && form.elements['irs'].checked,
+                newsletter: !!form.elements['newsletter'] && form.elements['newsletter'].checked
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            showStatus('Saved', 'bg-success');
+        }
+
+        function showStatus(text, badgeClass = 'bg-success') {
+            statusBadge.textContent = text;
+            statusBadge.className = 'badge ' + badgeClass;
             status.style.display = 'inline';
-            setTimeout(()=> status.style.display = 'none', 1500);
+            clearTimeout(showStatus._t);
+            showStatus._t = setTimeout(()=> status.style.display = 'none', 1400);
+        }
+
+        function setAll(checked) {
+            allCheckboxes().forEach(cb => cb.checked = !!checked);
+            showStatus(checked ? 'Selected' : 'Deselected', checked ? 'bg-info' : 'bg-warning');
         }
 
         form.addEventListener('submit', (e) => {
             // Save locally then allow the form to submit to the action URL (opens in new tab)
             savePreferences();
-            // Do not call e.preventDefault() so the form will POST/GET to the action URL.
+            // No preventDefault so the form will open the action in a new tab
         });
 
         resetBtn.addEventListener('click', () => {
-            // uncheck all and remove stored prefs
-            ['critical','offers','irs','newsletter'].forEach(n => form.elements[n].checked = false);
+            setAll(false);
             localStorage.removeItem(STORAGE_KEY);
-            status.textContent = 'Reset';
-            status.style.display = 'inline';
-            setTimeout(()=>{
-                status.style.display = 'none';
-                status.textContent = 'Saved';
-            }, 1200);
+            showStatus('Reset', 'bg-secondary');
+        });
+
+        selectAllBtn.addEventListener('click', () => setAll(true));
+        deselectAllBtn.addEventListener('click', () => setAll(false));
+
+        // keyboard-accessible: support ctrl/cmd + A to select all and ctrl/cmd + D to deselect
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                setAll(true);
+            } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+                e.preventDefault();
+                setAll(false);
+            }
         });
 
         // initialize
