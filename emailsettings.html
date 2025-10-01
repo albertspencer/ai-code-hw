@@ -184,25 +184,6 @@
             100% { transform: translateY(-120px) translateX(var(--x, -10px)) rotate(48deg) scale(.85); opacity: 0; }
         }
 
-        /* Easter egg banner (top) */
-        .easter-egg {
-            position: fixed;
-            top: 84px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-6px) scale(.98);
-            padding: .6rem .9rem;
-            border-radius: .7rem;
-            background: linear-gradient(90deg, rgba(var(--accent-light),0.22), rgba(255,255,255,0.94));
-            color: rgb(45,35,22);
-            box-shadow: 0 8px 26px rgba(30,20,10,0.08);
-            opacity: 0;
-            transition: transform 360ms cubic-bezier(.2,.9,.2,1), opacity 360ms;
-            z-index: 1060;
-            pointer-events: none;
-            font-weight: 600;
-        }
-        .easter-egg.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-
         /* Footer personality */
         .page-footer {
             position: fixed;
@@ -260,7 +241,6 @@
         @media (max-width:560px) {
             .brand-hero { padding: .9rem; gap: .6rem; }
             .mascot { width:46px; height:46px; font-size:.95rem; }
-            .easter-egg { top: 72px; padding: .5rem .7rem; }
             .egg-footer { bottom: 72px; padding: .6rem .8rem; font-size: .92rem; }
         }
     </style>
@@ -519,16 +499,7 @@
                 const original = mascot ? mascot.textContent : '';
                 if (mascot) mascot.textContent = '🪴';
 
-                // Top banner (keeps original behavior)
-                const egg = document.createElement('div');
-                egg.className = 'easter-egg';
-                egg.textContent = "Secret sprout unlocked — enjoy a virtual plant! 🌱";
-                document.body.appendChild(egg);
-
-                // animate in
-                requestAnimationFrame(() => egg.classList.add('show'));
-
-                // show bottom, easier to read
+                // Only use the bottom, easier-to-read banner (top banner removed)
                 if (eggFooter) {
                     eggFooter.textContent = "Secret sprout unlocked — enjoy a virtual plant! 🌱";
                     eggFooter.style.display = '';
@@ -538,11 +509,9 @@
 
                 // restore and cleanup after a while
                 setTimeout(() => {
-                    egg.classList.remove('show');
                     if (eggFooter) eggFooter.classList.remove('show');
                     if (mascot) mascot.textContent = original;
                     setTimeout(()=> {
-                        egg.remove();
                         if (eggFooter) eggFooter.style.display = 'none';
                     }, 420);
                 }, 3200);
